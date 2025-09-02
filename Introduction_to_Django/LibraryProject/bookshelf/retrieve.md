@@ -2,7 +2,7 @@
 
 ```python
 from bookshelf.models import Book
-
-book.objective.all()
+book = Book.objects.get(title='1984')
+book
 
 # <QuerySet [<Book: 1984 by George Orwell>]>
