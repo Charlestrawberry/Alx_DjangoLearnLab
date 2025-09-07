@@ -35,10 +35,10 @@ def register(request):
 
 
 # User Login (class-based view using built-in)
-class CustomLoginView(LoginView):
+class LoginView(LoginView):
     template_name = "relationship_app/login.html"
 
 
 # User Logout (class-based view using built-in)
-class CustomLogoutView(LogoutView):
+class LogoutView(LogoutView):
     template_name = "relationship_app/logout.html"
