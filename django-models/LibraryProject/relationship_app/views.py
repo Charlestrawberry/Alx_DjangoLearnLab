@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import Book
 from .models import Library
+
+from django.contrib.auth import login
+
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 
@@ -23,8 +26,9 @@ def register(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("login")  # redirect to login after successful registration
+            user = form.save()
+            login(request, user)  # ✅ log in the user right after registration
+            return redirect("list_books")
     else:
         form = UserCreationForm()
     return render(request, "relationship_app/register.html", {"form": form})
