@@ -30,6 +30,8 @@ SECURE_BROWSER_XSS_FILTER = True        # Helps mitigate XSS
 SECURE_CONTENT_TYPE_NOSNIFF = True      # Prevents MIME sniffing
 X_FRAME_OPTIONS = 'DENY'                # Prevents clickjacking
 
+# ✅ Force HTTPS redirects
+SECURE_SSL_REDIRECT = True 
 # Ensure cookies are sent only over HTTPS
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
