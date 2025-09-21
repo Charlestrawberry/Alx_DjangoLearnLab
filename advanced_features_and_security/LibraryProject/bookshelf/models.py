@@ -1,12 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 
 def profile_upload_path(instance, filename):
     # e.g., media/profiles/user_12/filename.jpg
     return f'profiles/user_{instance.pk or "new"}/{filename}'
 
-class CustomUserManager(UserManager):
+class CustomUserManager(BaseUserManager):
     """
     Extends default UserManager so we can cleanly handle our extra fields.
     With AbstractUser, username remains the identifier unless you change USERNAME_FIELD.
