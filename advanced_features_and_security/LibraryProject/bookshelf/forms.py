@@ -1,7 +1,7 @@
 from django import forms
 from .models import Book
 
-class Book(forms.ModelForm):
+class BookForm(forms.ModelForm):
     """Form for validating ExampleModel input safely."""
     
     class Meta:

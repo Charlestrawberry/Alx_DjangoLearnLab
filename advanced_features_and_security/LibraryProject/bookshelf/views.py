@@ -1,6 +1,20 @@
 from django.contrib.auth.decorators import permission_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Book
+from .forms import BookForm
+
+
+def create_book(request):
+    if request.method == "POST":
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("book_list")  # redirect to book list after saving
+    else:
+        form = BookForm()
+    
+    return render(request, "bookshelf/form-example.html", {"form": form})
+
 
 def safe_search(request):
     query = request.GET.get('q', '')  # user input
