@@ -29,7 +29,7 @@ class CustomUserManager(UserManager):
         return super().create_superuser(username, email=email, password=password, **extra_fields)
 
 
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     """
     Custom user based on AbstractUser (keeps username, first_name, last_name, etc.)
     Adds:
