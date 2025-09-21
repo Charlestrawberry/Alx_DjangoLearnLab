@@ -14,8 +14,16 @@ class BookAdmin(admin.ModelAdmin):
     list_filter = ("publication_year",)
 
 
+class CustomUserAdmin(BaseUserAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'date_of_birth')
+    fieldsets = BaseUserAdmin.fieldsets + (
+        (_('Profile'), {'fields': ('date_of_birth', 'profile_photo')}),
+    )
+    add_fieldsets = BaseUserAdmin.add_fieldsets + (
+        (_('Profile'), {'fields': ('date_of_birth', 'profile_photo')}),
+    )
 
-@admin.register(CustomUser)
+admin.site.register(CustomUser, CustomUserAdmin)
 class CustomUserAdmin(BaseUserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'date_of_birth')
     fieldsets = BaseUserAdmin.fieldsets + (
