@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'useraccount.apps.UseraccountConfig',
 ]
 
-AUTH_USER_MODEL = 'useraccount.User'  # must be set before first migrate
+AUTH_USER_MODEL = 'bookshelf.User'  # must be set before first migrate
 
 # For profile_photo
 MEDIA_URL = '/media/'
