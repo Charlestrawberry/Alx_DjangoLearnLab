@@ -1,5 +1,16 @@
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render
+from .models import Book
+
+def safe_search(request):
+    query = request.GET.get('q', '')  # user input
+    # ❌ DANGEROUS: SQL injection risk
+    # results = ExampleModel.objects.raw(f"SELECT * FROM bookshelf_examplemodel WHERE title = '{query}'")
+
+    # ✅ SAFE: ORM auto-escapes input
+    results = Book.objects.filter(title__icontains=query)
+
+    return render(request, "bookshelf/search.html", {"results": results})
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):

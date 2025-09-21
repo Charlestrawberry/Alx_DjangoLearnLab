@@ -23,7 +23,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-y^u$86+(umz&%%kr06it3$215v6(=e@6djuxabed*nt40w&t^n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
+# Security Headers
+SECURE_BROWSER_XSS_FILTER = True        # Helps mitigate XSS
+SECURE_CONTENT_TYPE_NOSNIFF = True      # Prevents MIME sniffing
+X_FRAME_OPTIONS = 'DENY'                # Prevents clickjacking
+
+# Ensure cookies are sent only over HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+#  (Optional but Recommended)
+SECURE_HSTS_SECONDS = 31536000          # Enforce HTTPS for 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
 
 ALLOWED_HOSTS = []
 
@@ -50,6 +65,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -59,6 +75,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+ #
+MIDDLEWARE += [
+    'csp.middleware.CSPMiddleware',
+]
+
+# ✅ Only allow content from self (your domain) and trusted CDNs
+CSP_DEFAULT_SRC = ("'self'", )
+CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
+CSP_SCRIPT_SRC = ("'self'", 'https://cdn.jsdelivr.net')
+
 
 ROOT_URLCONF = 'LibraryProject.urls'
 
