@@ -1,47 +1,31 @@
-from rest_framework import generics, permissions
-from .models import Author, Book
-from .serializers import BookSerializer, AuthorSerializer
+from rest_framework import generics, permissions, filters
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import Book
+from .serializers import BookSerializer
 
-# Author Views
-class AuthorListCreateView(generics.ListCreateAPIView):
-    """
-    GET: list all authors
-    POst: create author
-    """
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-class AuthorRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    GET: retrieve author details (with nested books)
-    PUT/PATCH: update author
-    DELETE: delete author
-    """
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-# Books
+# -------------------------------
+# LIST + CREATE VIEW
+# -------------------------------
+# - GET /books/  → List all books
+# - POST /books/ → Create a new book (requires login)
 class BookListCreateView(generics.ListCreateAPIView):
-    """
-    GET: list books (supports filtering, searching, ordering)
-    POST: create a new book (ensures publication_year validation)
-    """
-    queryset = Book.objects.select_related('author').all()
+    queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # anyone can read, only logged-in users can create
 
-    # Filtering, searching and ordering are enabled globally via settings, but you can add local defaults if desired
-    filterset_fields = ['publication_year', 'author__id']
-    search_fields = ['title', 'author__name']
-    ordering_fields = ['title', 'publication_year']
+    # Enable filtering and searching
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['title', 'author', 'publication_year']  # filter by these fields
+    search_fields = ['title', 'author']  # allows search queries like ?search=python
 
 
-class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    GET/PUT/PATCH/DELETE for a single book by id.
-    """
-    queryset = Book.objects.select_related('author').all()
+# -------------------------------
+# RETRIEVE + UPDATE + DELETE VIEW
+# -------------------------------
+# - GET /books/<id>/    → Get a single book
+# - PUT /books/<id>/    → Update book (requires login)
+# - DELETE /books/<id>/ → Delete book (requires login)
+class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # anyone can read, only logged-in users can edit/delete

@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-88xb0#lyg)e3&se3^7m1)brsd@!dr1izn1mj48y4cw=_)9x-*j'
+SECRET_KEY = 'django-insecure-)i*_vq-c@)uudg+x==y_!%3^7rexm%j5j3$7h266x9@yhjsj31'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,9 +36,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'api.apps.ApiConfig',
+    'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
+    'api.apps.ApiConfig',
 ]
 
 REST_FRAMEWORK = {
@@ -47,10 +48,10 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
 }
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
